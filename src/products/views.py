@@ -38,8 +38,13 @@ class ProducDetailView(DetailView):
 
 def product_detail_view(request, pk=None, *args,**kwargs):
 
-    #instance = Product.objects.get(pk=pk)
-    instance = get_object_or_404(Product,pk=pk)
+    qs = Product.objects.filter(id=pk)
+    
+    if qs.exists() and qs.count() == 1:
+        instance = qs.first()
+    else:
+        raise Http404("Product doesn't exist")
+
     context = {
         'object': instance
     }
