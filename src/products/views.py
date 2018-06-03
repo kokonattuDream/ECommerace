@@ -51,6 +51,21 @@ def product_list_view(request):
     return render(request, "products/list.html", context)
 
 
+class ProductDetailSlugView(DetailView):
+    #queryset = Product.object.all()
+    template_name = "products/detail.html"
+
+    def get_object(self, *args, **kwargs):
+
+        request = self.request
+        slug = self.kwargs.get('slug')
+
+        #instance = get_object_or_404(Product), slug=slug, active=True)
+        try:
+            instance = Product.objects.get(slug=slug, active=True)
+        except:
+            raise Http404("af_")
+        return instance
 
 class ProductDetailView(DetailView):
 
