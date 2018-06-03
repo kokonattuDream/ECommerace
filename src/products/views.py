@@ -18,22 +18,10 @@ class ProductFeaturedDetailView(DetailView):
     queryset = Product.objects.all().featured()
     template_name = "products/featured-detail.html"
 
-    def get_queryset(self, *args, **kwargs):
-
-        request = self.request
-        
-        return Product.objects.featured()
-
 
 class ProductListView(ListView):
-    queryset = Product.objects.all()
+
     template_name = "products/list.html"
-
-    def get_context_data(self, *args, **kwargs):
-
-        context = super(ProductListView, self).get_context_data(*args, **kwargs)
-
-        return context
 
     def get_queryset(self, *args, **kwargs):
 
@@ -52,7 +40,7 @@ def product_list_view(request):
 
 
 class ProductDetailSlugView(DetailView):
-    #queryset = Product.object.all()
+    queryset = Product.objects.all()
     template_name = "products/detail.html"
 
     def get_object(self, *args, **kwargs):
