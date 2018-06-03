@@ -20,7 +20,28 @@ def upload_image_path(instance, filename):
         final_filename=final_filename)
 
 # Create your models here.
+class ProductQuerySet(models.query.QuerySet):
+
+    def featured(self):
+
+        return self.filter(featured=True, active=True)
+
+    def active(self):
+
+        return self.filter(active = True)
+
 class ProductManager(models.Manager):
+
+    def get_queryset(self):
+
+        return ProductQuerySet(self.model, using=self._db)
+    
+    def all(self):
+        return self.get_queryset().active()
+
+    def featured(self):
+
+        return self.get_queryset().filter(featured=True)
 
     def get_by_id(self, id):
 
@@ -36,6 +57,8 @@ class Product(models.Model):
     description = models.TextField()
     price = models.DecimalField(decimal_places=2, max_digits=20, default = 39.99)
     image = models.ImageField(upload_to='products/', null=True, blank=True)
+    featured = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
 
     objects = ProductManager()
 
